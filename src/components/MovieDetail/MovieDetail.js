@@ -6,9 +6,11 @@ import { apiKey, apiImage } from "../../api";
 
 import Spinner from "../Spinner/Spinner";
 import Genres from "../Genres/Genres";
+import Casts from "../Casts/Casts";
 
 const MovieDetailStyled = styled.div`
   display: flex;
+  flex-direction: column;
 
   .movie__detail {
     display: flex;
@@ -78,6 +80,11 @@ const MovieDetailStyled = styled.div`
       background-color: rgba(0, 0, 0, 0.65);
     }
   }
+
+  .movie__cast {
+    width: 85%;
+    margin: 40px auto;
+  }
 `;
 
 const MovieDetail = (props) => {
@@ -143,7 +150,10 @@ const MovieDetail = (props) => {
             </div>
           </div>
         </div>
-        <div className="movie__cast"></div>
+        <div className="movie__cast">
+          <h1>Casts</h1>
+          <Casts casts={credits.cast} />
+        </div>
       </MovieDetailStyled>
     );
   }

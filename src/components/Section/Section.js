@@ -6,6 +6,7 @@ import { apiKey } from "../../api";
 import Slider from "../Slider/Slider";
 import Switch from "../Switch/Switch";
 import Spinner from "../Spinner/Spinner";
+import Card from "../Card/Card";
 
 const SectionStyled = styled.div`
   margin: 30px;
@@ -71,7 +72,6 @@ const Section = React.memo((props) => {
     return () => {
       clearTimeout(timer);
     };
-
   }, [props.isPopularMovies, props.isTrendingMovies]);
 
   return (
@@ -83,7 +83,24 @@ const Section = React.memo((props) => {
           switchToTVShows={props.switchToTVShows}
         />
       </div>
-      {loading ? <Spinner /> : <Slider content={content} />}
+      {loading ? (
+        <Spinner />
+      ) : (
+        <Slider>
+          {content.data.map((item) => (
+            <Card
+              key={item.id}
+              id={item.id}
+              src={item.poster_path}
+              title={item.title}
+              name={item.name}
+              release_date={item.release_date}
+              first_air_date={item.first_air_date}
+              isMovie={content.isMovie}
+            />
+          ))}
+        </Slider>
+      )}
     </SectionStyled>
   );
 });

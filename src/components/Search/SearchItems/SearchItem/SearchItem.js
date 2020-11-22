@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { apiImage } from "../../../../api";
-import noImage from "../../../../images/noImage.png";
+import noImage from "../../../../images/noImage.svg";
 
 const SearchItemStyled = styled.div`
   display: flex;
