@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import styled from "styled-components";
-import axios from "../../axios";
-import { apiKey } from "../../api";
 
 import Section from "../Section/Section";
 import Jumbotron from "../Jumbotron/Jumbotron";
@@ -11,40 +9,45 @@ const HomeStyled = styled.div`
   margin: 0 auto;
 `;
 
-const Home = (props) => {
-  const [isMovie, setIsMovie] = useState(true);
-  const [popular, setPopular] = useState([]);
-  const [trending, setTrending] = useState([]);
+const Home = React.memo((props) => {
+  const [isPopularMovies, setIsPopularMovies] = useState(true);
+  const [isTrendingMovies, setIsTrendingMovies] = useState(true);
 
-  useEffect(() => {
-    axios.get(`/movie/popular?api_key=${apiKey}`).then((res) => {
-      setPopular(res.data.results);
-    });
+  const switchPopularMoviesHandler = useCallback(() => {
+    setIsPopularMovies(true);
   }, []);
 
-  useEffect(() => {
-    axios.get(`/trending/movie/day?api_key=${apiKey}`).then((res) => {
-      setTrending(res.data.results);
-    });
+  const switchPopularTVShowsHandler = useCallback(() => {
+    setIsPopularMovies(false);
   }, []);
 
-  // const switchToMoviesHandler = () => {
-  //   setIsMovies(true);
-  // };
+  const switchTrendingMoviesHandler = useCallback(() => {
+    setIsTrendingMovies(true);
+  }, []);
 
-  // const switchToTVShowsHandler = () => {
-  //   setIsMovies(false);
-  // };
+  const switchTrendingTVShowsHandler = useCallback(() => {
+    setIsTrendingMovies(false);
+  }, []);
 
   console.log("[Home]");
 
   return (
     <HomeStyled>
       <Jumbotron />
-      <Section isMovie={isMovie} title="What's Popular" data={popular} />
-      <Section isMovie={isMovie} title="Treding" data={trending} />
+      <Section
+        isPopularMovies={isPopularMovies}
+        title="What's Popular"
+        switchToMovies={switchPopularMoviesHandler}
+        switchToTVShows={switchPopularTVShowsHandler}
+      />
+      <Section
+        isTrendingMovies={isTrendingMovies}
+        title="Trending"
+        switchToMovies={switchTrendingMoviesHandler}
+        switchToTVShows={switchTrendingTVShowsHandler}
+      />
     </HomeStyled>
   );
-};
+});
 
 export default Home;

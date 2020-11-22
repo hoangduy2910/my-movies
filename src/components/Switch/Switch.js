@@ -17,7 +17,6 @@ const SwitchStyled = styled.div`
 `;
 
 const Switch = (props) => {
-  console.log("[Switch]");
   return (
     <SwitchStyled>
       <div className="switch__movies" onClick={props.switchToMovies}>Movies</div>

@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import axios from "../../axios";
+import { apiKey } from "../../api";
 
 import Slider from "../Slider/Slider";
 import Switch from "../Switch/Switch";
+import Spinner from "../Spinner/Spinner";
 
 const SectionStyled = styled.div`
   margin: 30px;
@@ -21,15 +24,66 @@ const SectionStyled = styled.div`
 `;
 
 const Section = React.memo((props) => {
+  const [content, setContent] = useState({ isMovie: true, data: [] });
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    let timer = null;
+
+    if (props.isPopularMovies) {
+      setLoading(true);
+
+      timer = setTimeout(() => {
+        axios.get(`/movie/popular?api_key=${apiKey}`).then((res) => {
+          setContent({ isMovie: true, data: res.data.results });
+          setLoading(false);
+        });
+      }, 500);
+    } else if (props.isPopularMovies === false) {
+      setLoading(true);
+
+      timer = setTimeout(() => {
+        axios.get(`/tv/popular?api_key=${apiKey}`).then((res) => {
+          setContent({ isMovie: false, data: res.data.results });
+          setLoading(false);
+        });
+      }, 500);
+    } else if (props.isTrendingMovies) {
+      setLoading(true);
+
+      timer = setTimeout(() => {
+        axios.get(`/trending/movie/day?api_key=${apiKey}`).then((res) => {
+          setContent({ isMovie: true, data: res.data.results });
+          setLoading(false);
+        });
+      }, 500);
+    } else if (props.isTrendingMovies === false) {
+      setLoading(true);
+
+      timer = setTimeout(() => {
+        axios.get(`/trending/tv/day?api_key=${apiKey}`).then((res) => {
+          setContent({ isMovie: false, data: res.data.results });
+          setLoading(false);
+        });
+      }, 500);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+
+  }, [props.isPopularMovies, props.isTrendingMovies]);
+
   return (
     <SectionStyled>
       <div className="section__header">
         <h3 className="section__header-title">{props.title}</h3>
         <Switch
-          isMovie={props.isMovie}
+          switchToMovies={props.switchToMovies}
+          switchToTVShows={props.switchToTVShows}
         />
       </div>
-      <Slider isMovie={props.isMovie} data={props.data} />
+      {loading ? <Spinner /> : <Slider content={content} />}
     </SectionStyled>
   );
 });

@@ -43,8 +43,8 @@ const Card = React.memo((props) => {
           <img src={apiImage + props.src} alt={props.title} />
         </div>
         <div className="card__content">
-          <h3>{props.title}</h3>
-          <p>{props.date}</p>
+          <h3>{props.title ? props.title : props.name}</h3>
+          <p>{props.release_date ? props.release_date : props.first_air_date}</p>
         </div>
       </NavLink>
     </CardStyled>

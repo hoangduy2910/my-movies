@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import axios from "../../axios";
 import { apiKey, apiImage } from "../../api";
@@ -32,7 +33,7 @@ const MovieDetailStyled = styled.div`
         font-weight: 900;
       }
 
-      &__overview, &__director {
+      &__overview {
         margin-bottom: 30px;
 
         h3 {
@@ -43,6 +44,26 @@ const MovieDetailStyled = styled.div`
 
         p {
           font-size: 1.2rem;
+        }
+      }
+
+      &__director {
+        margin-bottom: 30px;
+
+        h3 {
+          font-size: 1.5rem;
+          font-weight: 900;
+          margin-bottom: 5px;
+        }
+
+        a {
+          font-size: 1.2rem;
+          text-decoration: none;
+          color: white;
+        }
+
+        a:hover {
+          border-bottom: 2px solid white;
         }
       }
     }
@@ -117,8 +138,8 @@ const MovieDetail = (props) => {
               <p>{movieDetail.overview}</p>
             </div>
             <div className="movie__detail-content__director">
-              <h3>{director.name}</h3>
-              <p>{director.job}</p>
+              <h3>Director</h3>
+              <NavLink to={`/person/${director.id}`} >{director.name}</NavLink>
             </div>
           </div>
         </div>
