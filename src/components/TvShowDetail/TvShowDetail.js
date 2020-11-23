@@ -80,9 +80,6 @@ const TvShowDetail = (props) => {
       .then((res) => {
         setCredits(res.data);
       });
-  }, [props.match.params.id]);
-
-  useEffect(() => {
     axios.get(`/tv/${props.match.params.id}?api_key=${apiKey}`).then((res) => {
       setTvShowDetail(res.data);
     });

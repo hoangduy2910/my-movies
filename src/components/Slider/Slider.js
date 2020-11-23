@@ -10,7 +10,7 @@ const SliderWrapper = (props) => {
       dots: true,
       infinite: false,
       speed: 500,
-      slidesToShow: 5,
+      slidesToShow: props.slidesToShow,
       slidesToScroll: 1,
     };
 
@@ -19,7 +19,7 @@ const SliderWrapper = (props) => {
         {props.children}
       </Slider>
     );
-  }, [props.children]);
+  }, [props.children, props.slidesToShow]);
 
   return slider;
 };

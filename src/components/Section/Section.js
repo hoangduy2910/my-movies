@@ -86,7 +86,7 @@ const Section = React.memo((props) => {
       {loading ? (
         <Spinner />
       ) : (
-        <Slider>
+        <Slider slidesToShow={5}>
           {content.data.map((item) => (
             <Card
               key={item.id}

@@ -34,11 +34,11 @@ const CardStyled = styled.div`
 const Card = React.memo((props) => {
   console.log("[Card]");
 
-  const path = props.isMovie ? `/movie/${props.id}` : `/tv/${props.id}`;
+  const query = props.isMovie ? "?media_type=movies" : "?media_type=tvShows";
 
   return (
     <CardStyled>
-      <NavLink className="card" to={path}>
+      <NavLink className="card" to={`/${props.id}${query}`}>
         <div className="card__image">
           <img src={apiImage + props.src} alt={props.title} />
         </div>
