@@ -31,7 +31,7 @@ const CreditStyled = styled.div`
 const Credit = (props) => {
   return (
     <CreditStyled>
-      <NavLink to="/">
+      <NavLink to={`/person/${props.id}`}>
         <img
           className={props.profile_path ? "" : "no-image"}
           src={

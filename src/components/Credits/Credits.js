@@ -12,10 +12,10 @@ const CreditsStyled = styled.div`
   flex-direction: column;
 
   .credits__header {
-    background-image: linear-gradient(to right, #999, black);
+    background-image: linear-gradient(to right, black, #999);
   }
 
-  .credits__header div {
+  .credits__header > div {
     display: flex;
     width: 70%;
     align-items: center;
@@ -27,15 +27,27 @@ const CreditsStyled = styled.div`
       border-radius: 5px;
     }
 
-    h1 {
-      color: white;
-      font-size: 2rem;
-      font-weight: 800;
-    }
+    div {
+      h1 {
+        color: white;
+        font-size: 2.2rem;
+        font-weight: 800;
+      }
 
-    h1:hover {
-      cursor: pointer;
-      border-bottom: 1px solid white;
+      div {
+        color: #ccc;
+        text-decoration: none;
+        font-size: 1.2rem;
+        border-bottom: 1px solid #ccc;
+
+        i {
+          font-size: 1rem;
+        }
+      }
+
+      div:hover {
+        cursor: pointer;
+      }
     }
   }
 
@@ -60,16 +72,20 @@ const Credits = (props) => {
   useEffect(() => {
     switch (mediaType) {
       case "movies":
-        axios
-          .get(`/movie/${props.match.params.id}?api_key=${apiKey}`)
-          .then((res) => {
-            setData(res.data);
-          });
-        axios
-          .get(`/movie/${props.match.params.id}/credits?api_key=${apiKey}`)
-          .then((res) => {
-            setCreditsData(res.data);
-          });
+        const promise1 = axios.get(
+          `/movie/${props.match.params.id}?api_key=${apiKey}`
+        );
+
+        const promise2 = axios.get(
+          `/movie/${props.match.params.id}/credits?api_key=${apiKey}`
+        );
+        Promise.all([promise1, promise2]).then((res) => {
+          // const movie = res[0].data;
+          // const credits = res[1].data;
+          // console.log(movie, credits);
+          setData(res[0].data);
+          setCreditsData(res[1].data);
+        });
         break;
       case "tvShows":
         axios
@@ -92,13 +108,18 @@ const Credits = (props) => {
 
   let credits = <Spinner />;
 
-  if (creditsData.length !== 0) {
+  if (creditsData.length !== 0 && data.length !== 0) {
     credits = (
       <CreditsStyled className="credits">
         <div className="credits__header">
           <div>
             <img src={apiImage + data.poster_path} alt={data.title} />
-            <h1 onClick={() => props.history.goBack()}>{data.title}</h1>
+            <div>
+              <h1>{data.title}</h1>
+              <div onClick={() => props.history.goBack()}>
+                <i className="fas fa-arrow-left"></i> Back to main
+              </div>
+            </div>
           </div>
         </div>
         <div className="credits__content">
@@ -107,6 +128,7 @@ const Credits = (props) => {
             {creditsData.cast.map((c, idx) => (
               <Credit
                 key={idx}
+                id={c.id}
                 profile_path={c.profile_path}
                 gender={c.gender}
                 name={c.name}
@@ -119,6 +141,7 @@ const Credits = (props) => {
             {creditsData.crew.map((c, idx) => (
               <Credit
                 key={idx}
+                id={c.id}
                 profile_path={c.profile_path}
                 gender={c.gender}
                 name={c.name}
@@ -130,6 +153,8 @@ const Credits = (props) => {
       </CreditsStyled>
     );
   }
+
+  console.log(creditsData);
 
   return credits;
 };
