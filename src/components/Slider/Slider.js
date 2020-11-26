@@ -2,9 +2,7 @@ import React, { useMemo } from "react";
 
 import Slider from "react-slick";
 
-const SliderWrapper = (props) => {
-  console.log("[Slider]");
-  
+const SliderWrapper = (props) => {  
   const slider = useMemo(() => {
     const settings = {
       dots: true,

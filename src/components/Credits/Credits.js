@@ -80,9 +80,6 @@ const Credits = (props) => {
           `/movie/${props.match.params.id}/credits?api_key=${apiKey}`
         );
         Promise.all([promise1, promise2]).then((res) => {
-          // const movie = res[0].data;
-          // const credits = res[1].data;
-          // console.log(movie, credits);
           setData(res[0].data);
           setCreditsData(res[1].data);
         });

@@ -54,7 +54,7 @@ const Cast = (props) => {
 
   return (
     <CastStyled>
-      <NavLink className="cast" to="/">
+      <NavLink className="cast" to={`/person/${props.id}`}>
         <div
           className={
             props.profile_path ? "cast__image" : "cast__image cast__no-image"
